@@ -60,6 +60,8 @@ module "network-info" {
 }
 
 
+// todo network association and auth rule should be refactored so they can be created based on project configuration and/or not creat at all but overlay, and delgated to tenant teams
+
 resource "aws_ec2_client_vpn_network_association" "associations" {
 	for_each = toset([for subnet in module.network-info.aws_subnet.data : subnet.id])
 	client_vpn_endpoint_id = aws_ec2_client_vpn_endpoint.vpn_endpoint.id
