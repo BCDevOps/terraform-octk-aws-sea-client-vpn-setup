@@ -22,6 +22,8 @@ This has been used as an overlay "layer", but should also be usable as a standal
 
 This module should not be used as a root module unless you are forking/copying the repo, as an aws provider is required and is expected to defined/injected by your root/calling module.
 
+This module requires use of server certificate, key, and CA chain issued using `easyrsa` as described [here](https://docs.aws.amazon.com/vpn/latest/clientvpn-admin/client-authentication.html#mutual).
+
 ```hcl
 provider "aws" {
 	region = "..."
