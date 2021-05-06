@@ -1,27 +1,47 @@
 
-# <application_license_badge>
-<!--- [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](./LICENSE) --->
+# License
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](./LICENSE)
 
-# BC Gov Terraform Template
+# OCTK Client VPN
 
-This repo provides a starting point for users who want to create valid Terraform modules stored in GitHub.  
+This repo provides a module to automate enablement of AWS' Client VPN service within an account in an SEA environment, including integration with a KeyCloak SSO service.
 
-## Third-Party Products/Libraries used and the licenses they are covered by
-<!--- product/library and path to the LICENSE --->
-<!--- Example: <library_name> - [![GitHub](<shield_icon_link>)](<path_to_library_LICENSE>) --->
+When applied, the module will create a SAML identity provider, VPN endpoint, and default network association and auth rule.  
 
 ## Project Status
 - [x] Development
 - [ ] Production/Maintenance
 
-## Documentation
-<!--- Point to another readme or create a GitHub Pages (https://guides.github.com/features/pages/) --->
-
 ## Getting Started
-<!--- setup env vars, secrets, instructions... --->
+
+This has been used as an overlay "layer", but should also be usable as a standalone module, provided that required variables are provided. 
+
+> Note: the `main.tf` in the root folder is an artifact of how this repo is consumed by the overlay machinery in order to apply resources to multiple accounts "at once" and would not be used if applying to a single account.  When applying to a single account, the `module` folder should be used directly and the root fodler contents can be ignored.
+
+### Usage
+
+This module should not be used as a root module unless you are forking/copying the repo, as an aws provider is required and is expected to defined/injected by your root/calling module.
+
+```hcl
+provider "aws" {
+	region = "..."
+}
+
+module "client-vpn" {
+	source = "path to this repo"
+
+	client_vpn_endpoint_name        = "some name"
+	vpn_users_group_name = "another name"
+	environment = "<environment name>" # used by network info module to discover network elements in account 
+	kc_base_url = "keycloak url"
+	kc_realm = "keycloak realm"
+	server_cert_private_key_pem = "<contents of private key pem>"
+	server_cert_body_pem = "<contents of cert body pem>"
+	ca_chain_pem =  "<content of cert chain pem>"
+}
+```
 
 ## Getting Help or Reporting an Issue
-<!--- Example below, modify accordingly --->
 To report bugs/issues/feature requests, please file an [issue](../../issues).
 
 
@@ -34,8 +54,8 @@ By participating in this project you agree to abide by its terms.
 
 
 ## License
-<!--- Example below, modify accordingly --->
-    Copyright 2018 Province of British Columbia
+
+    Copyright 2021 Province of British Columbia
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
