@@ -1,20 +1,3 @@
-terraform {
-	required_providers {
-		aws = {
-			source = "hashicorp/aws"
-			version = "~>3.36.0"
-		}
-		external = {
-			source = "hashicorp/external"
-			version = "~>2.0.0"
-		}
-		keycloak = {
-			source = "mrparkers/keycloak"
-			version = "~>3.0.0"
-		}
-	}
-}
-
 // more-or-less drop-in replacement for (broken-in-0.14) http provider
 data "external" "saml_idp_descriptor" {
 	program = [
